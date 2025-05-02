@@ -1,0 +1,13 @@
+packages:
+  - apps/*
+  - packages/*
+
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - bufferutil
+  - core-js-pure
+  - esbuild
+
+overrides:
+  next-forge: 'link:'
+  openvista-ai: 'link:'
