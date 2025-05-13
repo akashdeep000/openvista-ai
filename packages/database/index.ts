@@ -1,10 +1,12 @@
-import 'server-only';
+import 'server-cli-only';
 
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
+import { Pool } from '@neondatabase/serverless';
+import { drizzle } from 'drizzle-orm/neon-serverless';
 import { keys } from './keys';
 import * as schema from './schema/index';
 
-const client = neon(keys().DATABASE_URL);
+// Create a Pool using Neon WebSocket
+const pool = new Pool({ connectionString: keys().DATABASE_URL });
 
-export const database = drizzle({ client, schema });
+// Export the Drizzle client
+export const database = drizzle(pool, { schema });

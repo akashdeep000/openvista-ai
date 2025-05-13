@@ -1,5 +1,6 @@
 {
   "name": "@repo/database",
+  "private": "true",
   "version": "0.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -10,7 +11,9 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.0.0",
     "@t3-oss/env-nextjs": "^0.12.0",
+    "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
+    "server-cli-only": "^0.3.2",
     "server-only": "^0.0.1",
     "undici": "^7.8.0",
     "ws": "^8.18.1",
