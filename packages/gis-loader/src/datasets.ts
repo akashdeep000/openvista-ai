@@ -2,6 +2,8 @@ export interface Dataset {
   value: string;
   label: string;
   downloadUrl: string;
+  partial?: boolean;
+  layers?: string[];
   // Add other relevant properties like source, format, etc.
 }
 
@@ -19,12 +21,6 @@ export const datasets: Dataset[] = [
     downloadUrl:
       'https://www2.census.gov/geo/tiger/TIGER2024/COUNTY/tl_2024_us_county.zip', // Specific shapefile
   },
-  // {
-  //   value: 'tiger-places',
-  //   label: 'TIGER/Line Places',
-  //   downloadUrl:
-  //     'https://www2.census.gov/geo/tiger/TIGER2024/PLACE/tl_2024_us_place.zip', // Specific shapefile
-  // },
   {
     value: 'tiger-zctas',
     label: 'TIGER/Line ZCTAs (Zip Codes)',
@@ -36,12 +32,6 @@ export const datasets: Dataset[] = [
     label: 'TIGER/Line CBSAs',
     downloadUrl:
       'https://www2.census.gov/geo/tiger/TIGER2024/CBSA/tl_2024_us_cbsa.zip', // Specific shapefile
-  },
-  {
-    value: 'tiger-roads',
-    label: 'TIGER/Line Roads',
-    downloadUrl:
-      'https://www2.census.gov/geo/tiger/TIGER2024/ROADS/tl_2024_us_roads.zip', // Specific shapefile (assuming general roads)
   },
   {
     value: 'tiger-uac20',
@@ -59,12 +49,15 @@ export const datasets: Dataset[] = [
   {
     value: 'usgs-nhdplushr',
     label: 'USGS NHDPlusHR (Hydrography)',
+    partial: true,
+    layers: ['NHDArea', 'NHDWaterbody', 'NHDLine'],
     downloadUrl:
       'https://prd-tnm.s3.amazonaws.com/StagedProducts/Hydrography/NHDPlusHR/National/GDB/NHDPlus_H_National_Release_2_GDB.zip',
   },
   {
     value: 'usgs-3dep-dem',
     label: 'USGS 3DEP DEM (Solar Ready, Elevation, Slope)',
+    partial: true,
     downloadUrl:
       'https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1m/FullExtentSpatialMetadata/FESM_1m.gpkg',
   },
@@ -72,25 +65,8 @@ export const datasets: Dataset[] = [
   {
     value: 'osm',
     label: 'OSM Highways and Amenities',
+    partial: true,
     downloadUrl:
       'https://download.geofabrik.de/north-america/us-latest.osm.pbf',
   },
-  // FEMA Datasets (Accessed via FEMA Flood Map Service Center)
-  // {
-  //   value: 'fema-nfhl',
-  //   label: 'FEMA NFHL (Flood Zone)',
-  //   downloadUrl: 'https://msc.fema.gov/portal/advanceSearch', // Data portal
-  // },
-  // // LANDFIRE Datasets (Accessed via LANDFIRE Data Distribution Site)
-  // {
-  //   value: 'landfire',
-  //   label: 'LANDFIRE (Wildfire Risk)',
-  //   downloadUrl: 'https://www.landfire.gov/participate_getdata.php', // Data portal info
-  // },
-  // // USDA Datasets (Accessed via NRCS Geospatial Data Gateway or SSURGO Viewer)
-  // {
-  //   value: 'usda-ssurgo',
-  //   label: 'USDA SSURGO (Well Water Potential, Soil Fertility)',
-  //   downloadUrl: 'https://datagateway.nrcs.usda.gov/', // Data gateway
-  // },
 ];

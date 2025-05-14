@@ -63,7 +63,8 @@ program
       const s = spinner();
       try {
         s.start('Setting up database extensions');
-        await database.transaction(async (tx) => {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        await database.transaction(async (tx: any) => {
           await tx.execute(sql.raw('CREATE EXTENSION IF NOT EXISTS postgis'));
           await tx.execute(
             sql.raw('CREATE EXTENSION IF NOT EXISTS postgis_topology')
@@ -74,10 +75,14 @@ program
           await tx.execute(
             sql.raw('CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder')
           );
+          await tx.execute(sql.raw('CREATE EXTENSION IF NOT EXISTS hstore'));
         });
         s.stop('Successfully set up database extensions');
-      } catch (_) {
+      } catch (error) {
         s.stop('Failed to set up database extensions');
+        // biome-ignore lint/suspicious/noConsole: <explanation>
+        console.error(error);
+
         process.exit(1);
       }
       for (const datasetValue of selectedDatasetValues) {

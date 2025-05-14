@@ -1,3 +1,4 @@
+import fs from 'node:fs/promises';
 import path from 'node:path';
 import unzipper from 'unzipper';
 import type { Dataset } from './datasets';
@@ -25,15 +26,18 @@ export async function downloadDataset(dataset: Dataset): Promise<void> {
       onProgress: (transferred, total) => {
         progress.update(transferred, total);
       },
+      concurrency: dataset.partial ? 32 : undefined,
     });
-    // Unzip the file if it's a zip file
-    if (filename.endsWith('.zip')) {
-      progress.message('Extracting zip file...');
-      (await unzipper.Open.file(outputPath)).extract({
-        path: path.dirname(outputPath),
-      });
-      // await fs.unlink(outputPath);
-    }
+
+    await ifExists(outputPath, async () => {
+      if (filename.endsWith('.zip')) {
+        progress.message('Extracting zip file...');
+        await (await unzipper.Open.file(outputPath)).extract({
+          path: path.dirname(outputPath),
+        });
+        await fs.unlink(outputPath);
+      }
+    });
     progress.stop(`Successfully downloaded ${dataset.label}`);
   } catch (error) {
     progress.stop(
@@ -43,3 +47,12 @@ export async function downloadDataset(dataset: Dataset): Promise<void> {
     throw error; // Re-throw the error after stopping the spinner
   }
 }
+
+const ifExists = async (path: string, fn: () => Promise<void>) => {
+  try {
+    await fs.stat(path);
+    await fn();
+  } catch {
+    // Ignore error
+  }
+};

@@ -48,3 +48,9 @@ yarn-error.log*
 
 # Downloads
 downloads
+
+# Database
+.database
+
+# Compose
+docker-compose.yaml
