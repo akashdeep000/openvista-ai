@@ -1,25 +1,86 @@
-# next-forge
+# openvista-ai
 
-**Production-grade Turborepo template for Next.js apps.**
+This repository contains the source code for openvista-ai.
 
-<div>
-  <img src="https://img.shields.io/npm/dy/next-forge" alt="" />
-  <img src="https://img.shields.io/npm/v/next-forge" alt="" />
-  <img src="https://img.shields.io/github/license/haydenbleasel/next-forge" alt="" />
-</div>
+## Setup
 
-[next-forge](https://github.com/haydenbleasel/next-forge) is a [Next.js](https://nextjs.org/) project boilerplate for modern web application. It is designed to be a comprehensive starting point for new apps, providing a solid, opinionated foundation with a minimal amount of configuration.
+To set up the project locally, follow these steps:
 
-Clone the repo using:
+1.  **Clone the repository:**
 
-```sh
-npx next-forge@latest init
-```
+    ```sh
+    git clone https://github.com/your-org/openvista-ai.git # Replace with the actual repo URL
+    cd openvista-ai
+    ```
 
-Then read the [docs](https://docs.next-forge.com) for more information.
+2.  **Install dependencies:**
 
-<a href="https://github.com/haydenbleasel/next-forge/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=haydenbleasel/next-forge" />
-</a>
+    This project uses pnpm. Ensure you have pnpm installed (`npm install -g pnpm`).
 
-Made with [contrib.rocks](https://contrib.rocks).
+    ```sh
+    pnpm install
+    ```
+
+3.  **Environment Configuration:**
+
+    Copy the example environment file and update it with your configuration.
+
+    ```sh
+    cp .env.example .env
+    # Edit the .env file with your database connection string and other settings.
+    ```
+
+    Available Environment Variables:
+
+    | Variable      | Description                     |
+    |---------------|---------------------------------|
+    | `DATABASE_URL` | Connection string for the database |
+
+    <!-- 4.  **Database Setup:**
+
+        Generate and run database migrations.
+
+        ```sh
+        pnpm run db:generate
+        pnpm run db:migrate
+        ``` -->
+
+    4.  **Start Drizzle Studio:**
+
+        To view and manage the database, run the following command:
+
+        ```sh
+        pnpm run dev
+        ```
+
+    To view and manage the database, run the following command:
+
+    ```sh
+    pnpm run dev
+    ```
+
+## GIS Data Setup
+
+This project includes a tool for downloading and importing geographical data.
+
+1.  **Download GIS data:**
+
+    ```sh
+    pnpm run gis-loader download
+    ```
+
+2.  **Import GIS data into the database:**
+
+    ```sh
+    pnpm run gis-loader import
+    ```
+
+After completing these steps, the GIS data should be set up in your local database.
+
+## Contributing
+
+(Add contributing guidelines here)
+
+## License
+
+(Add license information here)
