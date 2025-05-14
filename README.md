@@ -36,22 +36,34 @@ To set up the project locally, follow these steps:
     |---------------|---------------------------------|
     | `DATABASE_URL` | Connection string for the database |
 
-    <!-- 4.  **Database Setup:**
+4.  **Install GIS Dependencies:**
 
-        Generate and run database migrations.
+    The GIS loader requires `ogr2ogr` (part of GDAL) and `osm2pgsql`. Install them using your system's package manager:
 
-        ```sh
-        pnpm run db:generate
-        pnpm run db:migrate
-        ``` -->
+    **Debian/Ubuntu:**
+    ```sh
+    sudo apt update
+    sudo apt install gdal-bin osm2pgsql
+    ```
 
-    4.  **Start Drizzle Studio:**
+    **macOS (using Homebrew):**
+    ```sh
+    brew update
+    brew install gdal osm2pgsql
+    ```
 
-        To view and manage the database, run the following command:
+    For other operating systems, please refer to the official documentation for [GDAL](https://gdal.org/download.html) and [osm2pgsql](https://osm2pgsql.org/doc/install.html).
 
-        ```sh
-        pnpm run dev
-        ```
+<!-- 5.  **Database Setup:**
+
+    Generate and run database migrations.
+
+    ```sh
+    pnpm run db:generate
+    pnpm run db:migrate
+    ``` -->
+
+5.  **Start Drizzle Studio:**
 
     To view and manage the database, run the following command:
 
