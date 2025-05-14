@@ -392,10 +392,8 @@ async function importSingleFile(
         `--style=${path.join(__dirname, 'osm-filter.lua')}`,
         '--prefix',
         tableName,
-        '--slim',
-        '--drop',
-        '--number-processes=4',
         '--log-progress=true',
+        '--log-level=error',
         inputPath,
       ]);
       break;
@@ -409,8 +407,12 @@ async function importSingleFile(
       const match = text.match(progressRegex);
       if (match) {
         lastPercent = Number(match[0]);
-        s.message(`Importing ${dataset.label}: ${lastPercent}%`);
+        s.message(`${lastPercent}%`);
       }
+    });
+
+    importCommand.stderr?.on('data', (output: string) => {
+      s.message(`${output.toString().trim()}`);
     });
 
     s.message(`Importing ${dataset.label}`);
@@ -418,6 +420,7 @@ async function importSingleFile(
     s.message(`Successfully imported ${dataset.label}`);
 
     if (fileType === 'pbf') {
+      await fs.unlink(path.join(__dirname, 'flat-nodes.bin'));
       return;
     }
     // Rename the table and indexes

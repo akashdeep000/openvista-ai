@@ -54,3 +54,6 @@ downloads
 
 # Compose
 docker-compose.yaml
+
+# Temp files
+flat-nodes.bin
