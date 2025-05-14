@@ -406,8 +406,6 @@ async function importSingleFile(
     let lastPercent = 0;
     importCommand.stdout?.on('data', (output: string) => {
       const text = output.toString().trim();
-      console.log(text);
-
       const match = text.match(progressRegex);
       if (match) {
         lastPercent = Number(match[0]);
