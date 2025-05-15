@@ -14,6 +14,8 @@ export async function downloadDataset(dataset: Dataset): Promise<void> {
   const outputPath = path.join(
     __dirname,
     '..',
+    '..',
+    '..',
     'downloads',
     dataset.value, // Use dataset value as subdirectory
     filename // Use filename from URL

@@ -3,6 +3,7 @@ import { database } from '@repo/database';
 import { sql } from 'drizzle-orm';
 import { type ExecaChildProcess, execa } from 'execa';
 import fs from 'node:fs/promises';
+import os from 'node:os';
 import path from 'node:path';
 import type { Dataset } from './datasets';
 import { keys } from './keys';
@@ -13,7 +14,7 @@ function getTableName(datasetValue: string, layerName?: string): string {
 }
 
 function getDatasetDir(value: string): string {
-  return path.join(__dirname, '..', 'downloads', value);
+  return path.join(__dirname, '..', '..', '..', 'downloads', value);
 }
 
 const progressRegex = /\d+(?=\D*$)/;
@@ -394,7 +395,9 @@ async function importSingleFile(
         tableName,
         '--slim',
         '--drop',
-        `--flat-nodes=${path.join(__dirname, 'flat-nodes.bin')}`,
+        `--cache=${Math.floor(os.totalmem() / 1024 / 1024)}`,
+        `--flat-nodes=${path.join(__dirname, '..', '..', '..', 'temp', 'flat-nodes.bin')}`,
+        `--number-processes=${Math.min(os.cpus().length, 32)}`,
         '--log-progress=true',
         '--log-level=error',
         inputPath,
@@ -410,20 +413,31 @@ async function importSingleFile(
       const match = text.match(progressRegex);
       if (match) {
         lastPercent = Number(match[0]);
-        s.message(`${lastPercent}%`);
+        s.message(`Importing ${dataset.label}: ${lastPercent}%`);
       }
     });
 
     importCommand.stderr?.on('data', (output: string) => {
       s.message(`${output.toString().trim()}`);
     });
-
+    if (fileType === 'pbf') {
+      try {
+        await fs.mkdir(path.join(__dirname, '..', '..', '..', 'temp'));
+        await fs.unlink(
+          path.join(__dirname, '..', '..', '..', 'temp', 'flat-nodes.bin')
+        );
+      } catch {
+        // Ignore error if file doesn't exist
+      }
+    }
     s.message(`Importing ${dataset.label}`);
     await importCommand;
     s.message(`Successfully imported ${dataset.label}`);
 
     if (fileType === 'pbf') {
-      await fs.unlink(path.join(__dirname, 'flat-nodes.bin'));
+      await fs.unlink(
+        path.join(__dirname, '..', '..', '..', 'temp', 'flat-nodes.bin')
+      );
       return;
     }
     // Rename the table and indexes

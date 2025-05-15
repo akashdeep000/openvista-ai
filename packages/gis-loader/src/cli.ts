@@ -45,7 +45,7 @@ program
   .description('Import downloaded GIS data into the database')
   .action(async () => {
     const downloadedDatasetsFolders = await fs.readdir(
-      path.join(__dirname, '..', 'downloads')
+      path.join(__dirname, '..', '..', '..', 'downloads')
     );
     const selectedDatasetValues = await multiselect({
       message: 'Select datasets to import:',

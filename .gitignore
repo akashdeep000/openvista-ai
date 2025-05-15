@@ -50,10 +50,7 @@ yarn-error.log*
 downloads
 
 # Database
-.database
-
-# Compose
-docker-compose.yaml
+database
 
 # Temp files
-flat-nodes.bin
+temp

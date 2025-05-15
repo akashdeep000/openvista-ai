@@ -1,0 +1,17 @@
+services:
+  postgres:
+    image: supabase/postgres:17.4.1.028
+    container_name: my_postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: mypassword
+
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    networks:
+      - backend
+
+networks:
+  backend:
