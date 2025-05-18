@@ -395,8 +395,7 @@ async function importSingleFile(
         tableName,
         '--slim',
         '--drop',
-        `--cache=${Math.floor(os.totalmem() / 1024 / 1024)}`,
-        `--flat-nodes=${path.join(__dirname, '..', '..', '..', 'temp', 'flat-nodes.bin')}`,
+        `--cache=${Math.floor(os.totalmem() / 1024 / 1024 / 0.75)}`,
         `--number-processes=${Math.min(os.cpus().length, 32)}`,
         '--log-progress=true',
         '--log-level=error',
@@ -418,7 +417,12 @@ async function importSingleFile(
     });
 
     importCommand.stderr?.on('data', (output: string) => {
-      s.message(`${output.toString().trim()}`);
+      const text = output.toString().trim();
+      if (text) {
+        s.message(`${text}`);
+      } else if (fileType === 'pbf') {
+        s.message(`Finished importing ${dataset.label}`);
+      }
     });
     if (fileType === 'pbf') {
       try {
@@ -435,9 +439,13 @@ async function importSingleFile(
     s.message(`Successfully imported ${dataset.label}`);
 
     if (fileType === 'pbf') {
-      await fs.unlink(
-        path.join(__dirname, '..', '..', '..', 'temp', 'flat-nodes.bin')
-      );
+      try {
+        await fs.unlink(
+          path.join(__dirname, '..', '..', '..', 'temp', 'flat-nodes.bin')
+        );
+      } catch {
+        // Ignore error if file doesn't exist
+      }
       return;
     }
     // Rename the table and indexes

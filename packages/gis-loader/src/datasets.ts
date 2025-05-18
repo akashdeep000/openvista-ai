@@ -64,7 +64,7 @@ export const datasets: Dataset[] = [
   // OSM Datasets (Typically accessed via Overpass API or extracts)
   {
     value: 'osm',
-    label: 'OSM Highways and Amenities',
+    label: 'OSM (Highways, Amenities, Shops, etc.)',
     partial: true,
     downloadUrl:
       'https://download.geofabrik.de/north-america/us-latest.osm.pbf',
